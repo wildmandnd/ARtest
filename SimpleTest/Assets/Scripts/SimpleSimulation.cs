@@ -112,6 +112,12 @@ public class SimpleSimulation : MonoBehaviour
                 squad.characters.Add(agent.queueSnapshot.characters[agent.matchmakedPlayers[2]]);
                 squads.Add(squad);
 
+                queue.characters.RemoveAt(agent.matchmakedPlayers[2]);
+                queue.characters.RemoveAt(agent.matchmakedPlayers[1]);
+                queue.characters.RemoveAt(agent.matchmakedPlayers[0]);
+
+                queue.Refill();
+
                 // Do director's job, assign adventure
 
                 // Mark this squad for adventure simulation

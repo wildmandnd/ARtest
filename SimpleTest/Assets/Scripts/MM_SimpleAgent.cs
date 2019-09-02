@@ -39,7 +39,7 @@ public class MM_SimpleAgent : Agent
 
     public override void AgentAction(float[] vectorAction, string textAction)
     {
-        if (!isWaitingFromMMmodel || 0 == vectorAction[0])
+        if (!isWaitingFromMMmodel || 0 == vectorAction[2])
         {
             Debug.LogFormat("{0} has received unintended Action callback, ignoring", name);
             return;
