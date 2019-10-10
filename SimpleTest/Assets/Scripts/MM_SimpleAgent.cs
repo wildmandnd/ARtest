@@ -6,15 +6,15 @@ using MLAgents;
 public class MM_SimpleAgent : Agent
 {
     public MM_Queue queueSnapshot;
-    public float MM_reward = float.MinValue;
+    // public float MM_reward = float.MinValue;
     public int[] matchmakedPlayers;
     public bool isWaitingFromMMmodel = false;
     public bool hasAdventureStarted = false;
-
+    
     public void CustomAgentReset()
     {
-        Debug.Log("Agent reset");
-        MM_reward = float.MinValue;
+        // Debug.Log("INFO: {0}: Agent reset", this.name);
+        // MM_reward = float.MinValue;
         matchmakedPlayers = new int[3];
         queueSnapshot = new MM_Queue();
     }
@@ -30,7 +30,7 @@ public class MM_SimpleAgent : Agent
     {
         foreach(Character _char in queueSnapshot.characters)
         {
-            //Debug.LogFormat("Adding observations of {0}", _char.id);
+            Debug.LogFormat("INFO: Adding observations of {0}: {1}, {2}, {3}", _char.id, _char.stat1, _char.stat2, _char.stat3);
             AddVectorObs(_char.stat1);
             AddVectorObs(_char.stat2);
             AddVectorObs(_char.stat3);
@@ -41,7 +41,7 @@ public class MM_SimpleAgent : Agent
     {
         if (!isWaitingFromMMmodel || 0 == vectorAction[2])
         {
-            Debug.LogFormat("{0} has received unintended Action callback, ignoring", name);
+            Debug.LogFormat("INFO: {0} has received unintended Action callback, ignoring", name);
             return;
         }
 
@@ -49,7 +49,7 @@ public class MM_SimpleAgent : Agent
         int player2 = Mathf.FloorToInt(vectorAction[1]);
         int player3 = Mathf.FloorToInt(vectorAction[2]);
 
-        Debug.LogFormat("Matching players {0}, {1} and {2}", player1, player2, player3);
+        Debug.LogFormat("INFO: Matching players {0}, {1} and {2}", player1, player2, player3);
 
         if (
             player1 < 0 || player1 > 9 ||

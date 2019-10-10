@@ -79,24 +79,26 @@ public class SimpleSimulation : MonoBehaviour
 
     public SimpleAcademy academy;
     public MM_SimpleAgent agentPrefab;
-    
+    private int step_cnt=0;
+
     // Start is called before the first frame update
     void Start()
     {
         queue = new MM_Queue();
-        Debug.Log(academy.GetIsInference());
+        Debug.LogFormat("INFO: is inference: {0}", academy.GetIsInference());
     }
 
     // Update is called once per frame
     public void Tick()
     {
+
         // If any of the MM agents is waiting for a Matchmaker algorithm, 
         // end the simulation to allow Python part to respond.
-        foreach(MM_SimpleAgent agent in MM_agents)
+        foreach (MM_SimpleAgent agent in MM_agents)
         {
             if (agent.isWaitingFromMMmodel)
             {
-                Debug.LogFormat("{0} is waiting for the decision, stopping simulation", agent.name);
+                Debug.LogFormat("INFO: {0} is waiting for the decision, stopping simulation", agent.name);
                 return;
             }
         }
@@ -126,9 +128,9 @@ public class SimpleSimulation : MonoBehaviour
         }
 
         // Warming up till we have 30 squads running on the map.
-        if (MM_agents.Count < 2)
+        if (MM_agents.Count < 3)
         {
-            Debug.Log("Adding squad to the queue");
+            Debug.LogFormat("INFO: MM_agents.Count={0}, Adding squad to the queue", MM_agents.Count);
             AddSquadToMMQueue();
             return;
         }
@@ -150,6 +152,11 @@ public class SimpleSimulation : MonoBehaviour
                     //Squad has finished their adventure
                     squad.funFactor = Random.value;
                     MM_agents[i].SetReward(squad.funFactor);
+                    MM_agents[i].CustomAgentReset();
+                    MM_agents[i].AssignMMQueue(queue);
+                    squad.maxTicks = Random.Range(100, 1000);
+                    squad.ticksSinceActivated = 0;
+
                     MM_agents[i].isWaitingFromMMmodel = true;
                     return;
                 }
@@ -161,12 +168,13 @@ public class SimpleSimulation : MonoBehaviour
     {
         MM_SimpleAgent agent = Instantiate<MM_SimpleAgent>(agentPrefab);
         agent.name = string.Format("MM Agent {0}", MM_agents.Count);
-        Debug.LogFormat("init {0}", agent.name);
+        Debug.LogFormat("INFO: init new agent: {0}", agent.name);
 
         agent.CustomAgentReset();
         agent.AssignMMQueue(queue);
         agent.isWaitingFromMMmodel = true;
 
         MM_agents.Add(agent);
+        Debug.Log("INFO: New agent is added");
     }
 }

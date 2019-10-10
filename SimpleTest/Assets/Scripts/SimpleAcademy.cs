@@ -10,12 +10,12 @@ public class SimpleAcademy : Academy
 
     public override void AcademyReset()
     {
-        Debug.Log("Academy Reset");
+        Debug.Log("INFO: Academy Reset");
     }
 
     public override void AcademyStep()
     {
-        Debug.LogFormat("Academy Step {0}", step);
+        Debug.LogFormat("INFO: Academy Step {0}", step);
         step++;
 
         ss.Tick();
