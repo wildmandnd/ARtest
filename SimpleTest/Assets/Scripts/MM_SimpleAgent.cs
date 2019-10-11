@@ -19,10 +19,9 @@ public class MM_SimpleAgent : Agent
         queueSnapshot = new MM_Queue();
     }
 
-    public void AssignMMQueue(MM_Queue _queue)
+    public void AssignMMQueue(ref MM_Queue _queue)
     {
         queueSnapshot.characters.Clear();
-        //Debug.LogFormat("fillin queue from global MM queue of {0}", _queue.characters.Count);
         queueSnapshot.characters.AddRange(_queue.characters);
     }
 
@@ -30,10 +29,8 @@ public class MM_SimpleAgent : Agent
     {
         foreach(Character _char in queueSnapshot.characters)
         {
-            //Debug.LogFormat("Adding observations of {0}", _char.id);
-            AddVectorObs(_char.stat1);
-            AddVectorObs(_char.stat2);
-            AddVectorObs(_char.stat3);
+            AddVectorObs(_char.patience);
+            AddVectorObs(_char.power);
         }
     }
 
@@ -69,13 +66,5 @@ public class MM_SimpleAgent : Agent
         matchmakedPlayers[2] = player3;
 
         isWaitingFromMMmodel = false;
-
-        /*
-        if (MM_reward >= 0)
-        {
-            SetReward(MM_reward);
-            Done();
-        }
-        */
     }
 }

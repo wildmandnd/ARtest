@@ -5,9 +5,9 @@ using MLAgents;
 
 public class Character
 {
-    public int stat1;
-    public int stat2;
-    public int stat3;
+    public int patience;
+    public int power;
+    public int waitingInTheQueue;
     public int id;
     static int maxid;
 
@@ -15,10 +15,19 @@ public class Character
     {
         id = maxid;
         maxid++;
+        waitingInTheQueue = 0;
 
-        stat1 = Random.Range(1, 100);
-        stat2 = Random.Range(1, 100);
-        stat3 = Random.Range(1, 100);
+        patience    = Random.Range(5, 95);
+        power       = Random.Range(5, 95);
+    }
+
+    public Character(int _id, int _patience, int _power)
+    {
+        id = _id;
+        waitingInTheQueue = 0;
+
+        patience = _patience;
+        power = _power;
     }
 }
 
@@ -26,46 +35,42 @@ public class MM_Queue
 {
     public List<Character> characters;
 
-    public MM_Queue()
+    public MM_Queue(bool refill = false)
     {
         characters = new List<Character>(10);
-        Refill();
-    }
-
-    public void RefillAfterMM(MM_SimpleAgent agent)
-    {
-        //foreach(int _char in agent.)
+        if(refill) Refill();
     }
 
     public void Refill()
     {
         while (characters.Count < 10) characters.Add(new Character());
-        //Debug.Log(characters.Count);
     }
 }
 
+/*
 public class Adventure
 {
     public int start;
     public int finish;
 }
+*/
 
 public class Squad
 {
     public List<Character> characters = new List<Character>();
     public float funFactor;
-    public Adventure adventure;
+    //public Adventure adventure;
     public int ticksSinceActivated;
     public int maxTicks;
 
     public Squad()
     {
-        maxTicks = Random.Range(100, 1000);
+        maxTicks = Random.Range(100, 500);
     }
 
     public float Reward()
     {
-        return 1.0f / Mathf.Min(1.0f, Mathf.Abs(adventure.start + adventure.finish - characters[0].stat1 - characters[1].stat2 - characters[2].stat3));
+        return 4.0f / (286.0f - (characters[0].power + characters[1].power + characters[2].power) + 60000/(50000 + characters[0].patience* characters[0].waitingInTheQueue) + 60000 / (50000 + characters[1].patience * characters[1].waitingInTheQueue) + 60000 / (50000 + characters[2].patience * characters[2].waitingInTheQueue));
     }
 }
 
@@ -83,7 +88,7 @@ public class SimpleSimulation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        queue = new MM_Queue();
+        queue = new MM_Queue(true);
         Debug.Log(academy.GetIsInference());
     }
 
@@ -164,7 +169,7 @@ public class SimpleSimulation : MonoBehaviour
         Debug.LogFormat("init {0}", agent.name);
 
         agent.CustomAgentReset();
-        agent.AssignMMQueue(queue);
+        agent.AssignMMQueue(ref queue);
         agent.isWaitingFromMMmodel = true;
 
         MM_agents.Add(agent);
