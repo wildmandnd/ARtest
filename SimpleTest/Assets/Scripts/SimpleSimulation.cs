@@ -166,6 +166,9 @@ public class SimpleSimulation : MonoBehaviour
                     return;
                 }
             }
+
+            foreach (Character _char in queue.characters)
+                _char.waitingInTheQueue++;
         }
     }
 
