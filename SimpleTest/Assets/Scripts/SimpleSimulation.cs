@@ -158,7 +158,7 @@ public class SimpleSimulation : MonoBehaviour
                     squad.funFactor = Random.value;
                     MM_agents[i].SetReward(squad.funFactor);
                     MM_agents[i].CustomAgentReset();
-                    MM_agents[i].AssignMMQueue(queue);
+                    MM_agents[i].AssignMMQueue(ref queue);
                     squad.maxTicks = Random.Range(100, 1000);
                     squad.ticksSinceActivated = 0;
 

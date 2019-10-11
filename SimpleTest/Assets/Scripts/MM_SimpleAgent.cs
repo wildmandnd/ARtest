@@ -28,6 +28,7 @@ public class MM_SimpleAgent : Agent
         {
             AddVectorObs(_char.patience);
             AddVectorObs(_char.power);
+            AddVectorObs(_char.waitingInTheQueue);
         }
     }
 
