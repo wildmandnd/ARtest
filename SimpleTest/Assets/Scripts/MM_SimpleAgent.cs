@@ -6,15 +6,12 @@ using MLAgents;
 public class MM_SimpleAgent : Agent
 {
     public MM_Queue queueSnapshot;
-    public float MM_reward = float.MinValue;
     public int[] matchmakedPlayers;
     public bool isWaitingFromMMmodel = false;
     public bool hasAdventureStarted = false;
-
+    
     public void CustomAgentReset()
     {
-        Debug.Log("Agent reset");
-        MM_reward = float.MinValue;
         matchmakedPlayers = new int[3];
         queueSnapshot = new MM_Queue();
     }
@@ -38,7 +35,7 @@ public class MM_SimpleAgent : Agent
     {
         if (!isWaitingFromMMmodel || 0 == vectorAction[2])
         {
-            Debug.LogFormat("{0} has received unintended Action callback, ignoring", name);
+            Debug.LogFormat("INFO: {0} has received unintended Action callback, ignoring", name);
             return;
         }
 
@@ -46,7 +43,7 @@ public class MM_SimpleAgent : Agent
         int player2 = Mathf.FloorToInt(vectorAction[1]);
         int player3 = Mathf.FloorToInt(vectorAction[2]);
 
-        Debug.LogFormat("Matching players {0}, {1} and {2}", player1, player2, player3);
+        Debug.LogFormat("INFO: Matching players {0}, {1} and {2}", player1, player2, player3);
 
         if (
             player1 < 0 || player1 > 9 ||
